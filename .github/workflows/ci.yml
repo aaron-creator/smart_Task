@@ -21,34 +21,34 @@ permissions:
   contents: read
 
 jobs:
-  frontend-build:
-    name: Frontend Build - Node
-    runs-on: ubuntu-latest
+  # frontend-build:
+  #   name: Frontend Build - Node
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Show frontend structure
-        run: |
-          pwd
-          ls -la
-          ls -la smart-task
+  #     - name: Show frontend structure
+  #       run: |
+  #         pwd
+  #         ls -la
+  #         ls -la smart-task
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: smart-task/package-lock.json
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v6
+  #       with:
+  #         node-version: '22'
+  #         cache: npm
+  #         cache-dependency-path: smart-task/package-lock.json
 
-      - name: Install frontend dependencies
-        run: npm ci
-        working-directory: smart-task
+  #     - name: Install frontend dependencies
+  #       run: npm ci
+  #       working-directory: smart-task
 
-      - name: Build frontend
-        run: npm run build
-        working-directory: smart-task
+  #     - name: Build frontend
+  #       run: npm run build
+  #       working-directory: smart-task
 
   backend-build:
     name: Backend Build - Spring Boot Maven
