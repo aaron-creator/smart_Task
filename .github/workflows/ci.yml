@@ -2,14 +2,14 @@ name: Fullstack CI - Angular + Spring Boot
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "sub-main" ]
     paths:
       - "task-smart/**"
       - "taskmanagement-backend/**"
       - ".github/workflows/ci.yml"
 
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "sub-main" ]
     paths:
       - "task-smart/**"
       - "taskmanagement-backend/**"
