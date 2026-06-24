@@ -1,0 +1,82 @@
+name: Fullstack CI - Angular + Spring Boot
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "smart-task/**"
+      - "taskmanagement-backend/**"
+      - ".github/workflows/ci.yml"
+
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "smart-task/**"
+      - "taskmanagement-backend/**"
+      - ".github/workflows/ci.yml"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-build:
+    name: Frontend Build - Node
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show frontend structure
+        run: |
+          pwd
+          ls -la
+          ls -la smart-task
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: smart-task/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: smart-task
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: smart-task
+
+  backend-build:
+    name: Backend Build - Spring Boot Maven
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show backend structure
+        run: |
+          pwd
+          ls -la
+          ls -la taskmanagement-backend
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: taskmanagement-backend/pom.xml
+
+      - name: Build backend with Maven
+        run: mvn -B -f taskmanagement-backend/pom.xml clean verify
+
+      - name: Upload backend JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: taskmanagement-backend/target/*.jar
